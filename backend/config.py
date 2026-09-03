@@ -40,7 +40,7 @@ DEMO_WATERSHEDS = [
         "project_code": "Project #B2045",
         "name": "Project #B2045 - Village Rampur Farm Pond",
         "village": "Village Rampur",
-        "district": "Solapur",
+        "district": "Solapur District",
         "state": "Maharashtra",
         "center": [17.6599, 75.9064],
         "bounds": [[17.62, 75.85], [17.70, 75.95]],
@@ -64,6 +64,37 @@ DEMO_WATERSHEDS = [
         "avg_ndwi": -0.18,
         "structures_count": 38,
         "status": "SPATIAL_DISCREPANCY_FLAG"
+    },
+    {
+        "id": "WS-AP-ANTP-04",
+        "project_code": "Project #D4012",
+        "name": "Project #D4012 - Village Anantapur Percolation Basin",
+        "village": "Village Anantapur",
+        "district": "Anantapur District",
+        "state": "Andhra Pradesh",
+        "center": [14.6819, 77.6006],
+        "bounds": [[14.65, 77.55], [14.72, 77.65]],
+        "claimed_structure": "Percolation Tank",
+        "avg_ndvi": 0.38,
+        "avg_ndwi": 0.08,
+        "structures_count": 51,
+        "status": "VERIFIED"
+    },
+    {
+        "id": "WS-KL-WAY-05",
+        "project_code": "Project #E5077",
+        "name": "Project #E5077 - Village Wayanad Contour Trench",
+        "village": "Village Wayanad",
+        "district": "Wayanad Sector",
+        "state": "Kerala",
+        "center": [11.6854, 76.1320],
+        "bounds": [[11.65, 76.10], [11.72, 76.16]],
+        "claimed_structure": "Plantation Contour Trench",
+        "avg_ndvi": 0.62,
+        "avg_ndwi": 0.24,
+        "structures_count": 29,
+        "status": "NEEDS_REVIEW"
     }
 ]
+
 

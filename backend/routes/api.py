@@ -93,12 +93,15 @@ def get_audit_detail(audit_id: int):
     item["validation_details"] = json.loads(item["validation_details"]) if item["validation_details"] else None
     return {"status": "success", "audit": item}
 
+from ..exif_parser import extract_real_photo_exif
+from ..gis_service import reverse_geocode_real_location
+
 @router.post("/audit/submit")
 async def submit_audit(
     watershed_id: str = Form("WS-AP-ANTP-01"),
     structure_type: str = Form("Check Dam (Concrete)"),
-    lat: float = Form(14.6820),
-    lng: float = Form(77.6010),
+    lat: float = Form(22.5726),
+    lng: float = Form(88.3639),
     azimuth: float = Form(135.0),
     focal_length: float = Form(28.0),
     inspector_id: str = Form("DEV-INSPECTOR-884"),
@@ -107,11 +110,11 @@ async def submit_audit(
 ):
     """
     Complete Pipeline Execution (Slide 2 Step 1 to Step 7):
-    1. Offline Capture & Crypto Signing Verification
-    2. EXIF & Viewshed 2D Cone Projection
-    3. Multispectral SRISHTI-DRISHTI Satellite Query
-    4. Dual AI Cross-Validation (Ground CV + Satellite NDVI/NDWI)
-    5. Database Audit Logging
+    1. Offline Capture & Real EXIF Metadata Extraction
+    2. Real OpenStreetMap Reverse Geocoding & Weather Telemetry
+    3. PostGIS / 2D Viewshed Cone Projection
+    4. Multispectral SRISHTI-DRISHTI Satellite Query
+    5. Dual AI Cross-Validation (Ground CV + Satellite NDVI/NDWI)
     """
     photo_bytes = await photo.read()
     timestamp = datetime.utcnow().isoformat() + "Z"
@@ -124,6 +127,17 @@ async def submit_audit(
         
     photo_url = f"/uploads/{filename}"
     
+    # Extract REAL EXIF metadata if photo was taken on real mobile phone camera
+    real_exif = extract_real_photo_exif(photo_bytes)
+    if real_exif["has_real_exif"]:
+        lat = real_exif["lat"]
+        lng = real_exif["lng"]
+        if real_exif["focal_length"]:
+            focal_length = real_exif["focal_length"]
+
+    # Perform REAL OpenStreetMap Reverse Geocoding
+    geo_location = reverse_geocode_real_location(lat, lng)
+
     # Cryptographic anti-spoofing verification
     photo_hash = generate_photo_hash(photo_bytes)
     if not device_signature:
@@ -136,6 +150,9 @@ async def submit_audit(
     
     # Run Dual AI Cross Validation
     val_res = cross_validate_ground_and_satellite(lat, lng, azimuth, filename, structure_type)
+    val_res["real_exif_extracted"] = real_exif
+    val_res["geo_location"] = geo_location
+
     
     # DB Insertion (PostGIS or SQLite)
     audit_code = f"AUD-{uuid.uuid4().hex[:6].upper()}"

@@ -58,14 +58,15 @@ def seed_sample_audits():
             "watershed_id": "WS-AP-ANTP-01",
             "inspector_id": "DEV-INSPECTOR-884",
             "structure_type": "Check Dam (Concrete)",
-            "lat": 14.6825,
-            "lng": 77.6012,
+            "lat": 22.5726,
+            "lng": 88.3639,
             "azimuth": 135.0,
             "focal_length": 28.0,
             "timestamp": "2026-08-28T10:15:00Z",
             "photo_url": "/static/sample_checkdam_1.jpg",
             "force_discrepancy": False
         },
+
         {
             "audit_code": "AUD-ANTP-002",
             "watershed_id": "WS-AP-ANTP-01",
