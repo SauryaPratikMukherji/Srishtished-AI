@@ -4,15 +4,17 @@ import { ShieldCheck, AlertTriangle, Search, Filter, Eye, Download, FileText, Ch
 export default function AuditLogTable({ audits, watersheds, onOpenProjectDetail }) {
 
   const [filterStatus, setFilterStatus] = useState('ALL');
+  const [filterLocation, setFilterLocation] = useState('ALL');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAuditModal, setSelectedAuditModal] = useState(null);
 
   const filteredAudits = audits.filter(item => {
     const matchesStatus = filterStatus === 'ALL' || item.status === filterStatus;
+    const matchesLocation = filterLocation === 'ALL' || item.watershed_id === filterLocation;
     const matchesSearch = item.audit_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           item.inspector_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           item.structure_type.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesStatus && matchesSearch;
+    return matchesStatus && matchesLocation && matchesSearch;
   });
 
   return (
@@ -21,7 +23,7 @@ export default function AuditLogTable({ audits, watersheds, onOpenProjectDetail 
       {/* Top Filter Bar */}
       <div className="glass-panel" style={{ padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
         
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
           <div style={{ position: 'relative' }}>
             <Search size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
             <input
@@ -36,10 +38,36 @@ export default function AuditLogTable({ audits, watersheds, onOpenProjectDetail 
                 borderRadius: '8px',
                 padding: '0.45rem 0.6rem 0.45rem 2rem',
                 fontSize: '0.85rem',
-                width: '260px'
+                width: '240px'
               }}
             />
           </div>
+
+          {watersheds && watersheds.length > 0 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <Filter size={15} color="var(--primary-cyan)" />
+              <select
+                value={filterLocation}
+                onChange={(e) => setFilterLocation(e.target.value)}
+                style={{
+                  background: 'rgba(0,0,0,0.3)',
+                  color: '#fff',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '8px',
+                  padding: '0.4rem 0.6rem',
+                  fontSize: '0.8rem',
+                  fontWeight: 600
+                }}
+              >
+                <option value="ALL" style={{ background: '#111827' }}>📍 All Work Locations</option>
+                {watersheds.map(w => (
+                  <option key={w.id} value={w.id} style={{ background: '#111827' }}>
+                    {w.village || w.name} ({w.district})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div style={{ display: 'flex', gap: '0.3rem' }}>
             <button

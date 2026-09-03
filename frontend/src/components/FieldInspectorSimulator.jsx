@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Camera, ShieldCheck, Compass, MapPin, Upload, Play, CheckCircle2, AlertTriangle, RefreshCw, Image as ImageIcon, Sparkles } from 'lucide-react';
 import { submitAuditForm } from '../api/client';
 
@@ -20,6 +20,20 @@ export default function FieldInspectorSimulator({ watersheds, onAuditSubmitted, 
   const [activeStep, setActiveStep] = useState(0);
   const [pipelineResult, setPipelineResult] = useState(null);
 
+  const currentProject = watersheds.find(w => w.id === selectedWs) || watersheds[0];
+
+  // Auto-sync lat, lng, and structure type when dropdown project changes
+  useEffect(() => {
+    const proj = watersheds.find(w => w.id === selectedWs);
+    if (proj && proj.center && Array.isArray(proj.center) && proj.center.length === 2) {
+      setLat(proj.center[0]);
+      setLng(proj.center[1]);
+      if (proj.claimed_structure) {
+        setStructureType(proj.claimed_structure);
+      }
+    }
+  }, [selectedWs, watersheds]);
+
   const analysisChecklist = [
     { num: 1, title: 'GPS Extracted', desc: `Captured (${lat.toFixed(4)}° N, ${lng.toFixed(4)}° E)` },
     { num: 2, title: 'Image Processed & Features Segmented', desc: 'ResNet/OpenCV structural boundary extraction' },
@@ -34,6 +48,14 @@ export default function FieldInspectorSimulator({ watersheds, onAuditSubmitted, 
     setPreviewUrl(samplePhotoUrl);
     if (sampleLat) setLat(sampleLat);
     if (sampleLng) setLng(sampleLng);
+
+    // Sync selectedWs if matching project exists
+    if (sampleLat && sampleLng && watersheds.length > 0) {
+      const matchingProj = watersheds.find(w => w.center && Math.abs(w.center[0] - sampleLat) < 0.1 && Math.abs(w.center[1] - sampleLng) < 0.1);
+      if (matchingProj) {
+        setSelectedWs(matchingProj.id);
+      }
+    }
 
     // Create synthetic file from fetch or canvas
     const canvas = document.createElement('canvas');
@@ -205,6 +227,39 @@ export default function FieldInspectorSimulator({ watersheds, onAuditSubmitted, 
             ))}
           </select>
         </div>
+
+        {/* Work Location Details Card */}
+        {currentProject && (
+          <div style={{
+            background: 'rgba(2, 132, 199, 0.12)',
+            border: '1px solid rgba(56, 189, 248, 0.35)',
+            borderRadius: '10px',
+            padding: '0.75rem 0.9rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.35rem'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontWeight: 700, fontSize: '0.78rem', color: 'var(--primary-cyan)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <MapPin size={15} color="var(--primary-cyan)" /> WORK LOCATION DETAILS
+              </span>
+              <span className={currentProject.status === 'SPATIAL_DISCREPANCY_FLAG' ? 'badge badge-warning' : 'badge badge-success'} style={{ fontSize: '0.62rem' }}>
+                {currentProject.status === 'SPATIAL_DISCREPANCY_FLAG' ? '⚠️ DISCREPANCY ZONE' : '🟢 VERIFIED ZONE'}
+              </span>
+            </div>
+            
+            <div style={{ color: '#ffffff', fontWeight: 800, fontSize: '0.88rem', marginTop: '0.1rem' }}>
+              📍 {currentProject.village || currentProject.name} — {currentProject.district}, {currentProject.state}
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.73rem', marginTop: '0.2rem' }}>
+              <div>Code: <strong style={{ color: '#fff' }}>{currentProject.project_code || currentProject.id}</strong></div>
+              <div>Structure: <strong style={{ color: '#fff' }}>{currentProject.claimed_structure || structureType}</strong></div>
+              <div>Target Lat: <strong style={{ color: 'var(--primary-cyan)' }}>{currentProject.center?.[0] || lat}</strong></div>
+              <div>Target Lng: <strong style={{ color: 'var(--primary-cyan)' }}>{currentProject.center?.[1] || lng}</strong></div>
+            </div>
+          </div>
+        )}
 
         {/* Structure Type Dropdown */}
         <div>

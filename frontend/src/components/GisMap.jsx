@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Polygon, Popup, Marker, FeatureGroup } from 'react-leaflet';
+import { MapContainer, TileLayer, Polygon, Popup, Marker, FeatureGroup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Eye, ShieldCheck, AlertTriangle, Layers, Filter, Compass, Info } from 'lucide-react';
 import { fetchSatelliteLayer } from '../api/client';
+
+// Helper component to auto-center map when dropdown location changes
+function RecenterMap({ center }) {
+  const map = useMap();
+  useEffect(() => {
+    if (center && Array.isArray(center) && center.length === 2) {
+      map.flyTo(center, 14, { duration: 1.2 });
+    }
+  }, [center, map]);
+  return null;
+}
 
 // Fix Leaflet default icon pathing
 delete L.Icon.Default.prototype._getIconUrl;
@@ -40,6 +51,7 @@ export default function GisMap({ watersheds, audits, selectedWatershed, setSelec
 
   useEffect(() => {
     if (currentWs) {
+      setSelectedAudit(null);
       fetchSatelliteLayer(currentWs.id).then(grid => {
         if (grid) setSatelliteGrid(grid);
       });
@@ -161,6 +173,8 @@ export default function GisMap({ watersheds, audits, selectedWatershed, setSelec
             scrollWheelZoom={true}
             style={{ width: '100%', height: '100%' }}
           >
+            <RecenterMap center={currentWs.center} />
+
             {/* Esri World Imagery Satellite Base */}
             <TileLayer
               attribution='&copy; ISRO Bhuvan & Esri World Imagery'

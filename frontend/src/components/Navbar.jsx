@@ -64,15 +64,6 @@ export default function Navbar({ activeTab, setActiveTab }) {
             <ShieldCheck size={16} />
             <span>Audit Logs</span>
           </button>
-
-          <button 
-            onClick={() => setActiveTab('analytics')}
-            className={activeTab === 'analytics' ? 'btn-primary' : 'btn-secondary'}
-            style={{ padding: '0.45rem 0.95rem', fontSize: '0.85rem' }}
-          >
-            <BarChart3 size={16} />
-            <span>Impact & Feasibility</span>
-          </button>
         </nav>
 
         {/* Status Indicator */}

@@ -4,7 +4,6 @@ import GisMap from './components/GisMap';
 import FieldInspectorSimulator from './components/FieldInspectorSimulator';
 import VerificationResultModal from './components/VerificationResultModal';
 import ProjectDetailsModal from './components/ProjectDetailsModal';
-import ImpactAnalytics from './components/ImpactAnalytics';
 import AuditLogTable from './components/AuditLogTable';
 import { fetchWatersheds, fetchAudits } from './api/client';
 
@@ -113,11 +112,6 @@ export default function App() {
             onAuditSubmitted={handleAuditSubmitted}
             onShowVerificationResult={(res) => setVerificationResult(res)}
           />
-        )}
-
-        {/* IMPACT & FEASIBILITY */}
-        {activeTab === 'analytics' && (
-          <ImpactAnalytics />
         )}
 
         {/* AUDIT LOGS TABLE */}
