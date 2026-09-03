@@ -9,7 +9,7 @@ POSTGIS_HOST = os.getenv("POSTGIS_HOST", "localhost")
 POSTGIS_PORT = int(os.getenv("POSTGIS_PORT", "5432"))
 POSTGIS_DB = os.getenv("POSTGIS_DB", "srishtished_db")
 POSTGIS_USER = os.getenv("POSTGIS_USER", "postgres")
-POSTGIS_PASSWORD = os.getenv("POSTGIS_PASSWORD", "postgres")
+POSTGIS_PASSWORD = os.getenv("POSTGIS_PASSWORD", "1234+-Abcd")
 DATABASE_URL = os.getenv("DATABASE_URL", None)
 
 def get_postgis_connection():
