@@ -13,15 +13,22 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-// Custom camera marker icon
-const cameraIcon = new L.DivIcon({
-  className: 'custom-camera-pin',
-  html: `<div style="background: #3b82f6; border: 2px solid white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-         </div>`,
-  iconSize: [28, 28],
-  iconAnchor: [14, 14]
-});
+// Helper function to create status-colored pin icons (🟢 Verified, 🟡 Needs Review, 🔴 Flagged)
+const getStatusIcon = (status) => {
+  let pinBg = '#10b981'; // 🟢 Green
+  if (status === 'NEEDS_REVIEW') pinBg = '#f59e0b'; // 🟡 Yellow
+  if (status === 'SPATIAL_DISCREPANCY_FLAG' || status === 'NOT_VERIFIED') pinBg = '#f43f5e'; // 🔴 Red
+
+  return new L.DivIcon({
+    className: 'custom-camera-pin',
+    html: `<div style="background: ${pinBg}; border: 2.5px solid white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.6); transform: scale(1.1);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+           </div>`,
+    iconSize: [30, 30],
+    iconAnchor: [15, 15]
+  });
+};
+
 
 export default function GisMap({ watersheds, audits, selectedWatershed, setSelectedWatershed }) {
   const [mapLayerMode, setMapLayerMode] = useState('ndvi'); // 'standard', 'ndvi', 'ndwi'
@@ -243,21 +250,24 @@ export default function GisMap({ watersheds, audits, selectedWatershed, setSelec
                     </Polygon>
                   )}
 
-                  {/* Inspector Camera Location Pin */}
+                  {/* Inspector Camera Location Pin (🟢 🟡 🔴 Color-Coded) */}
                   <Marker
                     position={[audit.lat, audit.lng]}
-                    icon={cameraIcon}
+                    icon={getStatusIcon(audit.status)}
                     eventHandlers={{
                       click: () => setSelectedAudit(audit)
                     }}
                   >
                     <Popup>
-                      <div style={{ textAlign: 'center' }}>
+                      <div style={{ textAlign: 'center', padding: '0.2rem' }}>
                         <strong style={{ fontSize: '0.85rem' }}>{audit.audit_code}</strong><br />
-                        <span style={{ fontSize: '0.75rem', color: '#9ca3af' }}>Click cone/marker for detail</span>
+                        <span style={{ fontSize: '0.75rem', color: audit.status === 'APPROVED' ? '#34d399' : '#fb7185' }}>
+                          Status: {audit.status === 'APPROVED' ? '🟢 Verified' : audit.status === 'NEEDS_REVIEW' ? '🟡 Needs Review' : '🔴 Flagged'}
+                        </span>
                       </div>
                     </Popup>
                   </Marker>
+
                 </React.Fragment>
               );
             })}

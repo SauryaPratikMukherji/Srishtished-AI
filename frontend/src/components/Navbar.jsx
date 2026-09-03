@@ -1,7 +1,7 @@
 import React from 'react';
 import { Map, Camera, BarChart3, ShieldCheck, Activity, Layers } from 'lucide-react';
 
-export default function Navbar({ activeTab, setActiveTab, liveStatus }) {
+export default function Navbar({ activeTab, setActiveTab }) {
   return (
     <header className="glass-panel" style={{ borderRadius: 0, borderTop: 0, borderLeft: 0, borderRight: 0, padding: '0.85rem 1.5rem', marginBottom: '1rem' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
@@ -23,15 +23,15 @@ export default function Navbar({ activeTab, setActiveTab, liveStatus }) {
 
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <h1 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', margin: 0, letterSpacing: '-0.01em' }}>
-                SRISHTISHED AI
+              <h1 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff', margin: 0, letterSpacing: '-0.01em' }}>
+                AQUA NEXUS
               </h1>
               <span className="badge badge-info" style={{ fontSize: '0.65rem', padding: '0.15rem 0.45rem' }}>
-                AQUA NEXUS
+                SIH 2026 PROTOTYPE
               </span>
             </div>
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0 }}>
-              SIH 2026 • Fusing Ground Truth with Satellite Intelligence
+              Fusing Ground Truth with Satellite Intelligence
             </p>
           </div>
         </div>
@@ -44,7 +44,7 @@ export default function Navbar({ activeTab, setActiveTab, liveStatus }) {
             style={{ padding: '0.45rem 0.95rem', fontSize: '0.85rem' }}
           >
             <Map size={16} />
-            <span>GIS Sight-Line Map</span>
+            <span>Main Dashboard</span>
           </button>
 
           <button 
@@ -53,16 +53,7 @@ export default function Navbar({ activeTab, setActiveTab, liveStatus }) {
             style={{ padding: '0.45rem 0.95rem', fontSize: '0.85rem' }}
           >
             <Camera size={16} />
-            <span>Inspector PWA</span>
-          </button>
-
-          <button 
-            onClick={() => setActiveTab('analytics')}
-            className={activeTab === 'analytics' ? 'btn-primary' : 'btn-secondary'}
-            style={{ padding: '0.45rem 0.95rem', fontSize: '0.85rem' }}
-          >
-            <BarChart3 size={16} />
-            <span>Impact & Feasibility</span>
+            <span>Add Inspection</span>
           </button>
 
           <button 
@@ -73,14 +64,22 @@ export default function Navbar({ activeTab, setActiveTab, liveStatus }) {
             <ShieldCheck size={16} />
             <span>Audit Logs</span>
           </button>
+
+          <button 
+            onClick={() => setActiveTab('analytics')}
+            className={activeTab === 'analytics' ? 'btn-primary' : 'btn-secondary'}
+            style={{ padding: '0.45rem 0.95rem', fontSize: '0.85rem' }}
+          >
+            <BarChart3 size={16} />
+            <span>Impact & Feasibility</span>
+          </button>
         </nav>
 
         {/* Status Indicator */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
           <span className="live-indicator"></span>
-          <span>FastAPI PostGIS Engine</span>
           <span className="badge badge-success" style={{ fontSize: '0.65rem' }}>
-            <Activity size={12} /> Live
+            <Activity size={12} /> PostGIS Engine Live
           </span>
         </div>
 

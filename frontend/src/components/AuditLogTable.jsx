@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { ShieldCheck, AlertTriangle, Search, Filter, Eye, Download, FileText, CheckCircle2 } from 'lucide-react';
 
-export default function AuditLogTable({ audits, watersheds }) {
+export default function AuditLogTable({ audits, watersheds, onOpenProjectDetail }) {
+
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAuditModal, setSelectedAuditModal] = useState(null);
@@ -122,13 +123,14 @@ export default function AuditLogTable({ audits, watersheds }) {
 
                   <td style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
                     <button
-                      onClick={() => setSelectedAuditModal(item)}
+                      onClick={() => onOpenProjectDetail ? onOpenProjectDetail(item) : setSelectedAuditModal(item)}
                       className="btn-secondary"
                       style={{ padding: '0.3rem 0.65rem', fontSize: '0.75rem' }}
                     >
-                      <Eye size={14} /> Inspect
+                      <Eye size={14} /> Project Details
                     </button>
                   </td>
+
                 </tr>
               );
             })}

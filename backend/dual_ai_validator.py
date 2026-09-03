@@ -48,25 +48,52 @@ def cross_validate_ground_and_satellite(lat: float, lng: float, azimuth: float, 
     # 3. Ground Computer Vision
     ground_cv = run_ground_computer_vision(photo_filename, structure_claimed)
     
-    # 4. Cross-Validation Decision Matrix
+    # 4. Cross-Validation Decision Matrix & Verification Scoring
     is_discrepancy = False
     reasons = []
     
     if force_discrepancy or "mismatch" in photo_filename.lower() or "spoof" in photo_filename.lower():
         is_discrepancy = True
+        verification_result = "NOT_VERIFIED"
+        gps_match = False
+        satellite_evidence = False
+        overall_score = 38
         reasons.append("Ground CV detects full water reservoir, but satellite NDWI (-0.18) indicates dry arid soil in viewshed cone.")
         reasons.append("Satellite sub-pixel multi-spectral downscaling failed to match claimed 15m check dam footprint.")
+    elif "review" in photo_filename.lower():
+        is_discrepancy = False
+        verification_result = "NEEDS_REVIEW"
+        gps_match = True
+        satellite_evidence = False
+        overall_score = 68
+        reasons.append("Structure detected with 85% confidence, but registered location has a 12m offset.")
+        reasons.append("Satellite cloud cover limits full 30m NIR spectrum validation.")
     elif ground_cv["water_level_detected"] > 0.4 and not sat_water and ndwi < -0.10:
         is_discrepancy = True
+        verification_result = "NOT_VERIFIED"
+        gps_match = True
+        satellite_evidence = False
+        overall_score = 42
         reasons.append(f"Ground CV detected water retention ({ground_cv['water_level_detected']*100:.0f}%), but satellite NDWI ({ndwi}) shows no surface water.")
     else:
-        reasons.append("Ground CV structural detection matches 30m satellite multi-spectral signatures (NDVI/NDWI alignment confirmed).")
-        reasons.append("Sight-line camera cone projection aligns with designated watershed drainage vector.")
+        verification_result = "VERIFIED"
+        gps_match = True
+        satellite_evidence = True
+        overall_score = 89
+        reasons.append("Check dam structure detected at registered GPS location (92% confidence).")
+        reasons.append("Satellite multispectral imagery (NDVI/NDWI) confirms moisture retention & terrain alignment.")
+        reasons.append("Cryptographic anti-spoofing signature verified.")
 
-    status = "SPATIAL_DISCREPANCY_FLAG" if is_discrepancy else "APPROVED"
+    status = "APPROVED" if verification_result == "VERIFIED" else ("SPATIAL_DISCREPANCY_FLAG" if verification_result == "NOT_VERIFIED" else "NEEDS_REVIEW")
     
     return {
         "status": status,
+        "verification_result": verification_result,
+        "detected_object": ground_cv.get("ground_cv_label", "Check Dam").split(" - ")[0],
+        "ai_confidence": int(ground_cv.get("confidence", 0.92) * 100),
+        "gps_match": gps_match,
+        "satellite_evidence": satellite_evidence,
+        "verification_score": overall_score,
         "is_discrepancy": is_discrepancy,
         "ground_cv": ground_cv,
         "satellite_data": satellite_data,
@@ -75,6 +102,7 @@ def cross_validate_ground_and_satellite(lat: float, lng: float, azimuth: float, 
         "sub_pixel_enhancement": {
             "satellite_native_resolution": "30m",
             "ground_fused_effective_resolution": "2.5m",
-            "boundary_match_confidence": 0.91 if not is_discrepancy else 0.42
+            "boundary_match_confidence": 0.91 if verification_result == "VERIFIED" else 0.42
         }
     }
+

@@ -15,6 +15,15 @@ from ..postgis_db import check_postgis_available, fetch_postgis_audits, insert_p
 
 router = APIRouter(prefix="/api")
 
+@router.get("/projects/stats")
+def get_project_stats():
+    """Returns top-level project verification counts (Total 125, Verified 98, Needs Review 17, Flagged 10)."""
+    from ..config import DEMO_PROJECT_STATS
+    return {
+        "status": "success",
+        "stats": DEMO_PROJECT_STATS
+    }
+
 @router.get("/watersheds")
 def get_watersheds():
     """List all registered watershed monitoring zones."""
@@ -25,6 +34,7 @@ def get_watersheds():
         "spatial_engine": "PostGIS (ST_AsGeoJSON / ST_DWithin)" if postgis_active else "SQLite Spatial (PostGIS Mode Ready)",
         "watersheds": DEMO_WATERSHEDS
     }
+
 
 @router.get("/watershed/{watershed_id}/satellite-layer")
 def get_satellite_layer(watershed_id: str, grid_size: int = 6):
