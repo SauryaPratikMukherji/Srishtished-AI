@@ -190,3 +190,9 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-block;
   animation: pulseGlow 2s infinite;
 }
+
+/* Custom Leaflet Camera Marker Pin */
+.custom-camera-pin {
+  background: transparent !important;
+  border: none !important;
+}

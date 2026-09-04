@@ -72,8 +72,8 @@ export async function fetchAudits(watershedId = null) {
         watershed_id: "WS-AP-ANTP-01",
         inspector_id: "DEV-INSPECTOR-884",
         structure_type: "Check Dam (Concrete)",
-        lat: 14.6825,
-        lng: 77.6012,
+        lat: 22.5726,
+        lng: 88.3639,
         azimuth: 135.0,
         focal_length: 28.0,
         timestamp: "2026-08-28T10:15:00Z",
@@ -82,7 +82,7 @@ export async function fetchAudits(watershedId = null) {
         status: "APPROVED",
         viewshed_geojson: {
           type: "Polygon",
-          coordinates: [[[77.6012, 14.6825], [77.6022, 14.6815], [77.6028, 14.6820], [77.6012, 14.6825]]]
+          coordinates: [[[88.3639, 22.5726], [88.3650, 22.5715], [88.3658, 22.5722], [88.3639, 22.5726]]]
         },
         validation_details: {
           status: "APPROVED",

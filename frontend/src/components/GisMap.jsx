@@ -58,7 +58,11 @@ export default function GisMap({ watersheds, audits, selectedWatershed, setSelec
     }
   }, [selectedWatershed]);
 
-  const filteredAudits = audits.filter(a => a.watershed_id === currentWs?.id);
+  const filteredAudits = audits.filter(a => {
+    if (a.watershed_id === currentWs?.id) return true;
+    if (currentWs?.center && Math.abs(a.lat - currentWs.center[0]) < 0.2 && Math.abs(a.lng - currentWs.center[1]) < 0.2) return true;
+    return false;
+  });
 
   // Map NDVI value to color gradient (red -> yellow -> dark green)
   const getNdviColor = (val) => {
@@ -129,6 +133,14 @@ export default function GisMap({ watersheds, audits, selectedWatershed, setSelec
               style={{ padding: '0.3rem 0.65rem', fontSize: '0.75rem' }}
             >
               Base Map
+            </button>
+
+            <button
+              onClick={() => setMapLayerMode('planet')}
+              className={mapLayerMode === 'planet' ? 'btn-primary' : 'btn-secondary'}
+              style={{ padding: '0.3rem 0.65rem', fontSize: '0.75rem', background: mapLayerMode === 'planet' ? '#8b5cf6' : undefined }}
+            >
+              🚀 PlanetScope 3m Daily
             </button>
 
             <button
@@ -268,6 +280,7 @@ export default function GisMap({ watersheds, audits, selectedWatershed, setSelec
                   <Marker
                     position={[audit.lat, audit.lng]}
                     icon={getStatusIcon(audit.status)}
+                    zIndexOffset={2000}
                     eventHandlers={{
                       click: () => setSelectedAudit(audit)
                     }}

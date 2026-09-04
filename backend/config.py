@@ -7,8 +7,9 @@ DB_PATH = BASE_DIR / "srishtished.db"
 
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
-# Cryptographic signing secret
+# Cryptographic signing secret & Satellite API Keys
 SECRET_SIGNING_KEY = "srishtished_crypto_secret_2026_sih"
+PLANET_API_KEY = os.getenv("PLANET_API_KEY", "PLAK4c62f9c9b6884c3dbc4709dcae59da67")
 
 # Project Dashboard Counters (Matching prompt specification)
 DEMO_PROJECT_STATS = {

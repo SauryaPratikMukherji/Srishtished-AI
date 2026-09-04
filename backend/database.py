@@ -72,8 +72,8 @@ def seed_sample_audits():
             "watershed_id": "WS-AP-ANTP-01",
             "inspector_id": "DEV-INSPECTOR-884",
             "structure_type": "Contour Trench System",
-            "lat": 14.6790,
-            "lng": 77.5980,
+            "lat": 22.5745,
+            "lng": 88.3650,
             "azimuth": 45.0,
             "focal_length": 24.0,
             "timestamp": "2026-08-29T11:40:00Z",
@@ -138,3 +138,39 @@ def seed_sample_audits():
 
     conn.commit()
     conn.close()
+
+    # Seed PostGIS if active
+    from .postgis_db import check_postgis_available, insert_postgis_audit, fetch_postgis_audits
+    if check_postgis_available():
+        pg_audits = fetch_postgis_audits()
+        if pg_audits is not None and len(pg_audits) == 0:
+            for item in sample_audits:
+                photo_bytes = f"dummy_photo_data_{item['audit_code']}".encode('utf-8')
+                photo_hash = generate_photo_hash(photo_bytes)
+                signature = generate_device_signature(
+                    item['lat'], item['lng'], item['azimuth'], item['timestamp'], photo_hash, item['inspector_id']
+                )
+                viewshed = calculate_viewshed_cone(
+                    item['lat'], item['lng'], item['azimuth'], distance_m=130.0
+                )
+                val_res = cross_validate_ground_and_satellite(
+                    item['lat'], item['lng'], item['azimuth'], item['photo_url'], item['structure_type'], item['force_discrepancy']
+                )
+                payload = {
+                    "audit_code": item['audit_code'],
+                    "watershed_id": item['watershed_id'],
+                    "inspector_id": item['inspector_id'],
+                    "structure_type": item['structure_type'],
+                    "lat": item['lat'],
+                    "lng": item['lng'],
+                    "azimuth": item['azimuth'],
+                    "focal_length": item['focal_length'],
+                    "timestamp": item['timestamp'],
+                    "photo_url": item['photo_url'],
+                    "photo_hash": photo_hash,
+                    "crypto_signature": signature,
+                    "crypto_verified": 1,
+                    "status": val_res['status'],
+                    "validation_details": val_res
+                }
+                insert_postgis_audit(payload, viewshed)
