@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Search, Layers, Map as MapIcon, Globe } from "lucide-react";
+import { Search, Layers, Map as MapIcon, Globe, MapPin, ShieldCheck, AlertTriangle } from "lucide-react";
 import { PageHeading, SectionCard } from "@/components/app/section-card";
 import { MockMap, MapLegend } from "@/components/app/mock-map";
 import { GisMap } from "@/components/app/GisMap";
@@ -36,7 +36,8 @@ function MapPage() {
   const [q, setQ] = useState("");
   const [active, setActive] = useState<Status[]>(STATUSES);
   const [vegetation, setVegetation] = useState(true);
-  const [selected, setSelected] = useState<Project | null>(null);
+  const [selectedMock, setSelectedMock] = useState<Project | null>(null);
+  const [selectedWsId, setSelectedWsId] = useState<string>("WS-AP-ANTP-01");
   const [mapMode, setMapMode] = useState<"leaflet" | "overview">("leaflet");
 
   const [watersheds, setWatersheds] = useState<Watershed[]>([]);
@@ -44,12 +45,17 @@ function MapPage() {
 
   useEffect(() => {
     fetchWatersheds().then((data) => {
-      if (data) setWatersheds(data);
+      if (data && data.length > 0) {
+        setWatersheds(data);
+        if (data[0]?.id) setSelectedWsId(data[0].id);
+      }
     });
     fetchAudits().then((data) => {
       if (data) setAudits(data);
     });
   }, []);
+
+  const selectedWs = watersheds.find((w) => w.id === selectedWsId) || watersheds[0];
 
   const projects = PROJECTS.filter(
     (p) =>
@@ -65,7 +71,7 @@ function MapPage() {
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
         <PageHeading
           title="Map & GIS"
-          subtitle="Spatial view of watershed structures under monitoring with live Sentinel-2 NDVI/NDWI layers."
+          subtitle="Spatial view of watershed structures with live PlanetScope 3m and Sentinel-2 multispectral layers."
         />
         <div className="flex items-center gap-2 rounded-lg border border-border bg-card p-1">
           <button
@@ -95,36 +101,42 @@ function MapPage() {
         </div>
       </div>
 
-      <div className="grid gap-5 xl:grid-cols-[1fr_18rem]">
+      <div className="grid gap-5 xl:grid-cols-[1fr_19rem]">
         <SectionCard title="Watershed GIS View" action={<MapLegend className="hidden md:flex" />}>
           {mapMode === "leaflet" ? (
             <GisMap
               watersheds={watersheds}
               audits={audits}
-              selectedWatershedId={watersheds[0]?.id}
-              height="h-[580px]"
+              selectedWatershedId={selectedWsId}
+              onSelectWatershed={(id) => setSelectedWsId(id)}
+              height="h-[620px]"
             />
           ) : (
             <MockMap
               projects={projects}
-              height="h-[580px]"
+              height="h-[620px]"
               showVegetation={vegetation}
-              onSelect={setSelected}
+              onSelect={setSelectedMock}
             />
           )}
         </SectionCard>
 
         <div className="space-y-5">
-          <SectionCard title="Search Project">
-            <div className="flex items-center gap-2 rounded-md border border-input bg-card px-3">
-              <Search className="h-4 w-4 text-muted-foreground" />
-              <input
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                placeholder="Project code or village"
-                className="w-full bg-transparent py-2 text-sm outline-none"
-              />
-            </div>
+          <SectionCard title="Select Project / Zone">
+            <label className="block text-xs font-semibold text-muted-foreground mb-1.5">
+              Watershed Register (FastAPI PostGIS)
+            </label>
+            <select
+              value={selectedWsId}
+              onChange={(e) => setSelectedWsId(e.target.value)}
+              className="w-full rounded-md border border-indigo-500/40 bg-background px-3 py-2 text-xs font-semibold text-foreground outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+            >
+              {watersheds.map((w) => (
+                <option key={w.id} value={w.id}>
+                  {w.status === "VERIFIED" ? "🟢 VERIFIED" : w.status === "NEEDS_REVIEW" ? "🟡 NEEDS REVIEW" : "🔴 DISCREPANCY"} — {w.project_code} ({w.village})
+                </option>
+              ))}
+            </select>
           </SectionCard>
 
           <SectionCard title="Layer Controls">
@@ -164,22 +176,74 @@ function MapPage() {
             </div>
           </SectionCard>
 
-          <SectionCard title="Selected Project">
-            {selected ? (
+          <SectionCard title="Selected Project Details">
+            {selectedWs ? (
+              <div className="space-y-3 text-sm">
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Project Code</span>
+                  <p className="font-bold text-base text-navy">{selectedWs.project_code}</p>
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Location</span>
+                  <p className="font-medium text-foreground">{selectedWs.village}, {selectedWs.district}</p>
+                  <p className="text-xs text-muted-foreground">{selectedWs.state}</p>
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Coordinates</span>
+                  <p className="font-mono text-xs text-foreground">
+                    {selectedWs.center?.[0]?.toFixed(4)}° N, {selectedWs.center?.[1]?.toFixed(4)}° E
+                  </p>
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Multispectral Indices</span>
+                  <div className="grid grid-cols-2 gap-2 mt-1">
+                    <div className="bg-emerald-500/10 border border-emerald-500/30 p-2 rounded text-center">
+                      <span className="text-[10px] block text-emerald-800 dark:text-emerald-300 font-semibold">AVG NDVI</span>
+                      <span className="text-sm font-extrabold text-emerald-700 dark:text-emerald-400">{selectedWs.avg_ndvi}</span>
+                    </div>
+                    <div className="bg-sky-500/10 border border-sky-500/30 p-2 rounded text-center">
+                      <span className="text-[10px] block text-sky-800 dark:text-sky-300 font-semibold">AVG NDWI</span>
+                      <span className="text-sm font-extrabold text-sky-700 dark:text-sky-400">{selectedWs.avg_ndwi}</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider mb-1 block">Verification Status</span>
+                  {selectedWs.status === "VERIFIED" && (
+                    <div className="flex items-center gap-2 p-2 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-900 dark:text-emerald-100 font-bold text-xs">
+                      <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" />
+                      <span>🟢 VERIFIED — Satellite match</span>
+                    </div>
+                  )}
+                  {selectedWs.status === "NEEDS_REVIEW" && (
+                    <div className="flex items-center gap-2 p-2 rounded bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-100 font-bold text-xs">
+                      <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />
+                      <span>🟡 NEEDS REVIEW — Moderate match</span>
+                    </div>
+                  )}
+                  {((selectedWs.status as string) === "SPATIAL_DISCREPANCY_FLAG" || (selectedWs.status as string) === "NOT_VERIFIED") && (
+                    <div className="flex items-center gap-2 p-2 rounded bg-rose-500/10 border border-rose-500/30 text-rose-900 dark:text-rose-100 font-bold text-xs">
+                      <AlertTriangle className="h-4 w-4 text-rose-500 shrink-0" />
+                      <span>🔴 SPATIAL DISCREPANCY — Flagged</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : selectedMock ? (
               <div className="space-y-2 text-sm">
-                <p className="font-bold text-navy">{selected.code}</p>
+                <p className="font-bold text-navy">{selectedMock.code}</p>
                 <p className="text-muted-foreground">
-                  {selected.village}, {selected.district}, {selected.state}
+                  {selectedMock.village}, {selectedMock.district}, {selectedMock.state}
                 </p>
-                <p>{selected.structure}</p>
+                <p>{selectedMock.structure}</p>
                 <p className="text-xs text-muted-foreground">
-                  {selected.lat.toFixed(4)}° N, {selected.lng.toFixed(4)}° E
+                  {selectedMock.lat.toFixed(4)}° N, {selectedMock.lng.toFixed(4)}° E
                 </p>
-                <StatusBadge status={selected.status} />
+                <StatusBadge status={selectedMock.status} />
               </div>
             ) : (
               <p className="text-sm text-muted-foreground">
-                Select a marker on the map to view project information.
+                Select a project from the dropdown or click a marker on the map.
               </p>
             )}
           </SectionCard>

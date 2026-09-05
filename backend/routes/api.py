@@ -51,6 +51,18 @@ def get_satellite_layer(watershed_id: str, grid_size: int = 6):
         "planet_telemetry": planet_telemetry
     }
 
+@router.get("/ai-analysis/{audit_code}")
+def get_ai_analysis(audit_code: str):
+    """Generates detailed 3-pillar Hugging Face AI analysis for an audit code."""
+    from ..ai_engine import generate_detailed_ai_analysis
+    
+    audits_list = get_audits().get("audits", [])
+    target_audit = next((a for a in audits_list if a["audit_code"] == audit_code), audits_list[0] if audits_list else {})
+    ws_id = target_audit.get("watershed_id", "WS-AP-ANTP-01")
+    target_ws = next((w for w in DEMO_WATERSHEDS if w["id"] == ws_id), DEMO_WATERSHEDS[0])
+    
+    return generate_detailed_ai_analysis(target_audit, target_ws)
+
 @router.get("/audits")
 def get_audits(watershed_id: str = None):
     """Retrieve all logged field audits with GeoJSON camera view cones via PostGIS or SQLite."""

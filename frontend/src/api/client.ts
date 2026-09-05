@@ -197,6 +197,39 @@ export async function fetchAudits(watershedId: string | null = null): Promise<Au
           ],
         },
       },
+      {
+        id: 3,
+        audit_code: "AUD-WAY-007",
+        watershed_id: "WS-KL-WAY-05",
+        inspector_id: "DEV-INSPECTOR-712",
+        structure_type: "Contour Trench",
+        lat: 11.6854,
+        lng: 76.132,
+        azimuth: 90.0,
+        focal_length: 24.0,
+        timestamp: "2026-09-03T15:10:00Z",
+        photo_url: "http://localhost:8000/static/sample_review.jpg",
+        crypto_verified: 1,
+        status: "NEEDS_REVIEW",
+        viewshed_geojson: {
+          type: "Polygon",
+          coordinates: [
+            [
+              [76.132, 11.6854],
+              [76.1332, 11.6854],
+              [76.133, 11.6862],
+              [76.132, 11.6854],
+            ],
+          ],
+        },
+        validation_details: {
+          status: "NEEDS_REVIEW",
+          reasons: [
+            "Structure detected with 85% confidence, but registered location has a 12m offset.",
+            "Satellite cloud cover limits full 30m NIR spectrum validation.",
+          ],
+        },
+      },
     ];
   }
 }
@@ -317,5 +350,16 @@ export async function submitAuditForm(formData: FormData) {
   } catch (err) {
     console.error("Audit submission error:", err);
     throw err;
+  }
+}
+
+export async function fetchAiAnalysis(auditCode: string) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/ai-analysis/${auditCode}`);
+    if (!res.ok) throw new Error("API request failed");
+    return await res.json();
+  } catch (err) {
+    console.warn("Using offline AI analysis fallback:", err);
+    return null;
   }
 }

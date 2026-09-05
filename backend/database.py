@@ -148,8 +148,8 @@ def seed_sample_audits():
             "azimuth": 310.0,
             "focal_length": 28.0,
             "timestamp": "2026-09-04T12:00:00Z",
-            "photo_url": "/static/sample_mismatch.jpg",
-            "force_discrepancy": True
+            "photo_url": "/static/sample_review.jpg",
+            "force_discrepancy": False
         }
     ]
 
