@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Search, Layers, Map as MapIcon, Globe, MapPin, ShieldCheck, AlertTriangle } from "lucide-react";
+import { Search, Layers, Map as MapIcon, Globe, MapPin, ShieldCheck, AlertTriangle, Info, Camera } from "lucide-react";
 import { PageHeading, SectionCard } from "@/components/app/section-card";
 import { MockMap, MapLegend } from "@/components/app/mock-map";
 import { GisMap } from "@/components/app/GisMap";
@@ -109,16 +109,211 @@ function MapPage() {
               audits={audits}
               selectedWatershedId={selectedWsId}
               onSelectWatershed={(id) => setSelectedWsId(id)}
-              height="h-[620px]"
+              height="h-[520px]"
             />
           ) : (
             <MockMap
               projects={projects}
-              height="h-[620px]"
+              height="h-[520px]"
               showVegetation={vegetation}
               onSelect={setSelectedMock}
             />
           )}
+
+          {/* Satellite Layer & GIS Indicator Guide (NDVI, NDWI, PlanetScope 3m) */}
+          <div className="mt-4 pt-4 border-t border-border space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Info className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                <h3 className="text-xs font-bold uppercase tracking-wider text-navy dark:text-slate-200">
+                  GIS Layer & Spectral Index Indicator Guide
+                </h3>
+              </div>
+              <span className="text-[11px] text-muted-foreground font-mono">
+                Sentinel-2 & PlanetScope 3m Spatial Legend
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {/* 🌿 NDVI Vegetation Index */}
+              <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3 dark:bg-emerald-950/20 space-y-2">
+                <div className="flex items-center gap-2 border-b border-emerald-500/20 pb-1.5">
+                  <span className="flex h-6 w-6 items-center justify-center rounded bg-emerald-600 text-white text-xs font-bold">
+                    🌿
+                  </span>
+                  <div>
+                    <h4 className="text-xs font-bold text-emerald-950 dark:text-emerald-300">
+                      NDVI Vegetation Index
+                    </h4>
+                    <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono">
+                      Normalized Difference Vegetation Index
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center justify-between gap-2 bg-background/80 p-1.5 rounded border border-border">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded-full bg-[#15803d] inline-block border border-black/20 shrink-0" />
+                      <span className="font-semibold text-[11px]">Dark Green</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">
+                      Dense Canopy (&gt;0.50)
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 bg-background/80 p-1.5 rounded border border-border">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded-full bg-[#22c55e] inline-block border border-black/20 shrink-0" />
+                      <span className="font-semibold text-[11px]">Medium Green</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">
+                      Crop / Healthy (0.30 - 0.50)
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 bg-background/80 p-1.5 rounded border border-border">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded-full bg-[#84cc16] inline-block border border-black/20 shrink-0" />
+                      <span className="font-semibold text-[11px]">Lime Green</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-lime-700 dark:text-lime-400 bg-lime-500/10 px-1.5 py-0.5 rounded">
+                      Sparse Grass (0.10 - 0.30)
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 bg-background/80 p-1.5 rounded border border-border">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded-full bg-[#eab308] inline-block border border-black/20 shrink-0" />
+                      <span className="font-semibold text-[11px]">Yellow / Gold</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">
+                      Bare Soil / Arid (&lt;0.10)
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 💧 NDWI Water Index */}
+              <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 p-3 dark:bg-sky-950/20 space-y-2">
+                <div className="flex items-center gap-2 border-b border-sky-500/20 pb-1.5">
+                  <span className="flex h-6 w-6 items-center justify-center rounded bg-sky-600 text-white text-xs font-bold">
+                    💧
+                  </span>
+                  <div>
+                    <h4 className="text-xs font-bold text-sky-950 dark:text-sky-300">
+                      NDWI Water Index
+                    </h4>
+                    <p className="text-[10px] text-sky-700 dark:text-sky-400 font-mono">
+                      Normalized Difference Water Index
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center justify-between gap-2 bg-background/80 p-1.5 rounded border border-border">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded-full bg-[#1d4ed8] inline-block border border-black/20 shrink-0" />
+                      <span className="font-semibold text-[11px]">Deep Blue</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-blue-700 dark:text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded">
+                      Check Dam Reservoir (&gt;0.20)
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 bg-background/80 p-1.5 rounded border border-border">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded-full bg-[#0284c7] inline-block border border-black/20 shrink-0" />
+                      <span className="font-semibold text-[11px]">Sky Blue</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-sky-700 dark:text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded">
+                      Streams / Moisture (0.05 - 0.20)
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 bg-background/80 p-1.5 rounded border border-border">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded-full bg-[#f43f5e] inline-block border border-black/20 shrink-0" />
+                      <span className="font-semibold text-[11px]">Rose / Red</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-rose-700 dark:text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded">
+                      Dry Ground / No Water (&lt;0.05)
+                    </span>
+                  </div>
+                  <div className="p-1.5 rounded bg-sky-500/10 border border-sky-500/20 text-[10px] text-sky-800 dark:text-sky-200">
+                    💡 Positive NDWI confirms water impoundment behind check dams.
+                  </div>
+                </div>
+              </div>
+
+              {/* 🛰️ PlanetScope 3m Daily */}
+              <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3 dark:bg-purple-950/20 space-y-2">
+                <div className="flex items-center gap-2 border-b border-purple-500/20 pb-1.5">
+                  <span className="flex h-6 w-6 items-center justify-center rounded bg-purple-600 text-white text-xs font-bold">
+                    🛰️
+                  </span>
+                  <div>
+                    <h4 className="text-xs font-bold text-purple-950 dark:text-purple-300">
+                      PlanetScope 3m Daily
+                    </h4>
+                    <p className="text-[10px] text-purple-700 dark:text-purple-400 font-mono">
+                      Daily High-Res Dove Satellite Grid
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center justify-between gap-2 bg-background/80 p-1.5 rounded border border-border">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded border-2 border-[#9333ea] bg-purple-500/30 inline-block shrink-0" />
+                      <span className="font-semibold text-[11px]">Purple Boundary</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-purple-700 dark:text-purple-400 bg-purple-500/10 px-1.5 py-0.5 rounded">
+                      3m x 3m Grid Frame
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 bg-background/80 p-1.5 rounded border border-border">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded bg-[#16a34a] inline-block shrink-0" />
+                      <span className="font-semibold text-[11px]">Green Grid Pixel</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">
+                      Vegetation Cell (3m)
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 bg-background/80 p-1.5 rounded border border-border">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded bg-[#0284c7] inline-block shrink-0" />
+                      <span className="font-semibold text-[11px]">Blue Grid Pixel</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-sky-700 dark:text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded">
+                      Water Body Cell (3m)
+                    </span>
+                  </div>
+                  <div className="p-1.5 rounded bg-purple-500/10 border border-purple-500/20 text-[10px] text-purple-800 dark:text-purple-200">
+                    🛰️ 3-Meter daily resolution tracks micro-structures & small check dams.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 📸 Field Markers & Viewshed Cones Reference */}
+            <div className="rounded-lg border border-border bg-card p-2.5 flex flex-wrap items-center justify-between gap-3 text-xs shadow-sm">
+              <div className="flex items-center gap-2 font-bold text-navy dark:text-slate-200">
+                <Camera className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                <span>Field Pins & Viewshed Cones:</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-3.5 text-[11px]">
+                <span className="inline-flex items-center gap-1.5 font-medium text-emerald-700 dark:text-emerald-400">
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-300 dark:ring-emerald-800 shrink-0" />
+                  🟢 Verified Structure
+                </span>
+                <span className="inline-flex items-center gap-1.5 font-medium text-amber-700 dark:text-amber-400">
+                  <span className="h-2.5 w-2.5 rounded-full bg-amber-500 ring-2 ring-amber-300 dark:ring-amber-800 shrink-0" />
+                  🟡 Needs Review
+                </span>
+                <span className="inline-flex items-center gap-1.5 font-medium text-rose-700 dark:text-rose-400">
+                  <span className="h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-rose-300 dark:ring-rose-800 shrink-0" />
+                  🔴 Spatial Discrepancy
+                </span>
+                <span className="inline-flex items-center gap-1.5 font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded border border-indigo-200 dark:border-indigo-800">
+                  📐 Shaded Cone = Field Photo Viewshed / Camera FOV
+                </span>
+              </div>
+            </div>
+          </div>
         </SectionCard>
 
         <div className="space-y-5">
