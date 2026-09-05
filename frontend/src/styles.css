@@ -1,0 +1,174 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Shristified AI — government watershed monitoring design system.
+ * Navy + forest green + amber + red on off-white.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-navy: var(--navy);
+  --color-navy-2: var(--navy-2);
+  --color-verified: var(--verified);
+  --color-verified-soft: var(--verified-soft);
+  --color-review: var(--review);
+  --color-review-soft: var(--review-soft);
+  --color-flagged: var(--flagged);
+  --color-flagged-soft: var(--flagged-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-saffron: var(--saffron);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --shadow-card: 0 1px 2px oklch(0.28 0.06 245 / 0.06), 0 1px 3px oklch(0.28 0.06 245 / 0.05);
+  --shadow-raised: 0 4px 14px oklch(0.28 0.06 245 / 0.1);
+}
+
+:root {
+  --radius: 0.5rem;
+
+  --background: oklch(0.978 0.003 247);
+  --foreground: oklch(0.24 0.03 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.03 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.03 250);
+
+  --navy: oklch(0.283 0.062 245.5);
+  --navy-2: oklch(0.322 0.075 257);
+
+  --primary: oklch(0.283 0.062 245.5);
+  --primary-foreground: oklch(0.985 0.002 247);
+  --secondary: oklch(0.945 0.008 247);
+  --secondary-foreground: oklch(0.283 0.062 245.5);
+  --muted: oklch(0.955 0.006 247);
+  --muted-foreground: oklch(0.49 0.02 252);
+  --accent: oklch(0.93 0.018 245);
+  --accent-foreground: oklch(0.283 0.062 245.5);
+
+  --verified: oklch(0.505 0.118 152);
+  --verified-soft: oklch(0.945 0.038 152);
+  --review: oklch(0.632 0.142 72);
+  --review-soft: oklch(0.955 0.052 82);
+  --flagged: oklch(0.518 0.187 27);
+  --flagged-soft: oklch(0.948 0.033 25);
+  --info: oklch(0.52 0.11 240);
+  --info-soft: oklch(0.95 0.025 240);
+  --saffron: oklch(0.72 0.16 55);
+
+  --destructive: oklch(0.518 0.187 27);
+  --destructive-foreground: oklch(0.985 0.002 247);
+  --border: oklch(0.9 0.01 247);
+  --input: oklch(0.9 0.01 247);
+  --ring: oklch(0.42 0.08 248);
+
+  --chart-1: oklch(0.283 0.062 245.5);
+  --chart-2: oklch(0.505 0.118 152);
+  --chart-3: oklch(0.632 0.142 72);
+  --chart-4: oklch(0.518 0.187 27);
+  --chart-5: oklch(0.52 0.11 240);
+
+  --sidebar: oklch(0.283 0.062 245.5);
+  --sidebar-foreground: oklch(0.93 0.012 247);
+  --sidebar-primary: oklch(0.505 0.118 152);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.34 0.07 250);
+  --sidebar-accent-foreground: oklch(0.99 0 0);
+  --sidebar-border: oklch(0.36 0.06 250);
+  --sidebar-ring: oklch(0.6 0.09 245);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family:
+      "Segoe UI", "Noto Sans", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.01em;
+  }
+}
+
+@utility gov-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+@utility gov-topstrip {
+  background-image: linear-gradient(
+    90deg,
+    var(--saffron) 0 33.33%,
+    oklch(1 0 0) 33.33% 66.66%,
+    var(--verified) 66.66% 100%
+  );
+}
+
+@utility map-canvas {
+  background-color: oklch(0.93 0.028 150);
+  background-image:
+    radial-gradient(circle at 22% 30%, oklch(0.86 0.06 150 / 0.9) 0 18%, transparent 19%),
+    radial-gradient(circle at 72% 62%, oklch(0.87 0.05 160 / 0.8) 0 15%, transparent 16%),
+    radial-gradient(circle at 48% 80%, oklch(0.9 0.05 100 / 0.8) 0 14%, transparent 15%),
+    linear-gradient(115deg, transparent 48.6%, oklch(0.72 0.09 240 / 0.55) 49%, transparent 51%),
+    linear-gradient(72deg, transparent 61.6%, oklch(0.72 0.09 240 / 0.4) 62%, transparent 63.6%),
+    linear-gradient(oklch(0.3 0.03 245 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.3 0.03 245 / 0.07) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    40px 40px,
+    40px 40px;
+}

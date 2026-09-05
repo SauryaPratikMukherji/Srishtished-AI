@@ -14,9 +14,9 @@ PLANET_API_KEY = os.getenv("PLANET_API_KEY", "PLAK4c62f9c9b6884c3dbc4709dcae59da
 # Project Dashboard Counters (Matching prompt specification)
 DEMO_PROJECT_STATS = {
     "total_projects": 125,
-    "verified": 98,
-    "needs_review": 17,
-    "flagged": 10
+    "verified": 25,
+    "needs_review": 35,
+    "flagged": 65
 }
 
 # Demo Watershed & Project Locations
@@ -49,7 +49,7 @@ DEMO_WATERSHEDS = [
         "avg_ndvi": 0.45,
         "avg_ndwi": 0.12,
         "structures_count": 65,
-        "status": "VERIFIED"
+        "status": "SPATIAL_DISCREPANCY_FLAG"
     },
     {
         "id": "WS-MP-BUND-03",
@@ -79,7 +79,7 @@ DEMO_WATERSHEDS = [
         "avg_ndvi": 0.38,
         "avg_ndwi": 0.08,
         "structures_count": 51,
-        "status": "VERIFIED"
+        "status": "SPATIAL_DISCREPANCY_FLAG"
     },
     {
         "id": "WS-KL-WAY-05",

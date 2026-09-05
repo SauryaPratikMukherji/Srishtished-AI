@@ -8,7 +8,7 @@ from ..config import DEMO_WATERSHEDS, UPLOAD_DIR
 from ..database import get_db_connection
 from ..viewshed import calculate_viewshed_cone
 from ..crypto_auth import verify_crypto_payload, generate_device_signature, generate_photo_hash
-from ..satellite_service import generate_satellite_grid_overlay, query_srishti_drishti_bands
+from ..satellite_service import generate_satellite_grid_overlay, query_srishti_drishti_bands, query_planet_labs_telemetry
 from ..dual_ai_validator import cross_validate_ground_and_satellite
 
 from ..postgis_db import check_postgis_available, fetch_postgis_audits, insert_postgis_audit
@@ -41,11 +41,14 @@ def get_satellite_layer(watershed_id: str, grid_size: int = 6):
     """Generates satellite multispectral NDVI/NDWI grid overlay for a watershed zone."""
     target_ws = next((w for w in DEMO_WATERSHEDS if w["id"] == watershed_id), DEMO_WATERSHEDS[0])
     grid_geojson = generate_satellite_grid_overlay(target_ws["bounds"], grid_size)
+    center = target_ws.get("center", [22.5726, 88.3639])
+    planet_telemetry = query_planet_labs_telemetry(center[0], center[1])
     return {
         "watershed_id": target_ws["id"],
         "watershed_name": target_ws["name"],
         "layer_type": "SRISHTI_DRISHTI_30M_MULTISPECTRAL",
-        "grid": grid_geojson
+        "grid": grid_geojson,
+        "planet_telemetry": planet_telemetry
     }
 
 @router.get("/audits")

@@ -35,7 +35,7 @@ export async function fetchWatersheds() {
         avg_ndvi: 0.45,
         avg_ndwi: 0.12,
         structures_count: 65,
-        status: "VERIFIED"
+        status: "SPATIAL_DISCREPANCY_FLAG"
       },
       {
         id: "WS-MP-BUND-03",
@@ -50,6 +50,34 @@ export async function fetchWatersheds() {
         avg_ndwi: -0.18,
         structures_count: 38,
         status: "SPATIAL_DISCREPANCY_FLAG"
+      },
+      {
+        id: "WS-AP-ANTP-04",
+        project_code: "Project #D4012",
+        name: "Project #D4012 - Village Anantapur Percolation Basin",
+        village: "Village Anantapur",
+        district: "Anantapur District",
+        state: "Andhra Pradesh",
+        center: [14.6819, 77.6006],
+        bounds: [[14.65, 77.55], [14.72, 77.65]],
+        avg_ndvi: 0.38,
+        avg_ndwi: 0.08,
+        structures_count: 51,
+        status: "SPATIAL_DISCREPANCY_FLAG"
+      },
+      {
+        id: "WS-KL-WAY-05",
+        project_code: "Project #E5077",
+        name: "Project #E5077 - Village Wayanad Contour Trench",
+        village: "Village Wayanad",
+        district: "Wayanad Sector",
+        state: "Kerala",
+        center: [11.6854, 76.1320],
+        bounds: [[11.65, 76.10], [11.72, 76.16]],
+        avg_ndvi: 0.62,
+        avg_ndwi: 0.24,
+        structures_count: 29,
+        status: "NEEDS_REVIEW"
       }
     ];
 
@@ -116,15 +144,84 @@ export async function fetchAudits(watershedId = null) {
   }
 }
 
-export async function fetchSatelliteLayer(watershedId) {
+export function generateLocalFallbackGrid(bounds = [[22.54, 88.32], [22.60, 88.40]], gridSize = 6) {
+  const safeBounds = bounds && bounds.length === 2 ? bounds : [[22.54, 88.32], [22.60, 88.40]];
+  const minLat = safeBounds[0][0];
+  const minLng = safeBounds[0][1];
+  const maxLat = safeBounds[1][0];
+  const maxLng = safeBounds[1][1];
+  const latStep = (maxLat - minLat) / gridSize;
+  const lngStep = (maxLng - minLng) / gridSize;
+  const features = [];
+
+  for (let i = 0; i < gridSize; i++) {
+    for (let j = 0; j < gridSize; j++) {
+      const cellMinLat = minLat + i * latStep;
+      const cellMaxLat = cellMinLat + latStep;
+      const cellMinLng = minLng + j * lngStep;
+      const cellMaxLng = cellMinLng + lngStep;
+      const seed = (i * 13 + j * 7) % 17;
+      const varFactor = (seed - 8) / 100.0;
+      const ndvi = Number(Math.max(-0.2, Math.min(0.9, 0.42 + varFactor)).toFixed(3));
+      const ndwi = Number(Math.max(-0.3, Math.min(0.8, 0.18 - varFactor)).toFixed(3));
+      const smi = Number(Math.max(0.0, Math.min(1.0, 0.35 + varFactor * 0.5)).toFixed(3));
+
+      features.push({
+        type: "Feature",
+        properties: {
+          grid_id: `cell_${i}_${j}`,
+          ndvi,
+          ndwi,
+          smi,
+          water_detected: ndwi > 0.05 || smi > 0.35
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[
+            [Number(cellMinLng.toFixed(6)), Number(cellMinLat.toFixed(6))],
+            [Number(cellMaxLng.toFixed(6)), Number(cellMinLat.toFixed(6))],
+            [Number(cellMaxLng.toFixed(6)), Number(cellMaxLat.toFixed(6))],
+            [Number(cellMinLng.toFixed(6)), Number(cellMaxLat.toFixed(6))],
+            [Number(cellMinLng.toFixed(6)), Number(cellMinLat.toFixed(6))]
+          ]]
+        }
+      });
+    }
+  }
+
+  return {
+    type: "FeatureCollection",
+    features
+  };
+}
+
+export async function fetchSatelliteLayer(watershedId, bounds = null) {
   try {
     const res = await fetch(`${API_BASE_URL}/watershed/${watershedId}/satellite-layer`);
     if (!res.ok) throw new Error("API request failed");
     const data = await res.json();
-    return data.grid;
+    return {
+      grid: data.grid || generateLocalFallbackGrid(bounds),
+      planet_telemetry: data.planet_telemetry || {
+        constellation: "PlanetScope 3m High-Res Daily",
+        satellite_id: "Dove-252e-PSB",
+        gsd_m: 3.0,
+        cloud_cover_pct: 2.5,
+        acquired_timestamp: "2026-09-03T05:19:09Z"
+      }
+    };
   } catch (err) {
     console.warn("Using offline satellite grid layer:", err);
-    return null;
+    return {
+      grid: generateLocalFallbackGrid(bounds),
+      planet_telemetry: {
+        constellation: "PlanetScope 3m High-Res Daily",
+        satellite_id: "Dove-252e-PSB",
+        gsd_m: 3.0,
+        cloud_cover_pct: 2.5,
+        acquired_timestamp: "2026-09-03T05:19:09Z"
+      }
+    };
   }
 }
 

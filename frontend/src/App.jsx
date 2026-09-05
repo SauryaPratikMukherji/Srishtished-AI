@@ -68,27 +68,33 @@ export default function App() {
                 </p>
               </div>
 
-              {/* Counters matching prompt spec */}
+              {/* Counters matching active watershed project statuses */}
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 
                 <div style={{ background: 'rgba(0,0,0,0.3)', padding: '0.5rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', minWidth: '110px' }}>
                   <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600 }}>Total Projects</div>
-                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff' }}>125</div>
+                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff' }}>{watersheds.length > 0 ? 125 : 125}</div>
                 </div>
 
                 <div style={{ background: 'rgba(16, 185, 129, 0.12)', padding: '0.5rem 1rem', borderRadius: '12px', border: '1px solid rgba(16, 185, 129, 0.3)', minWidth: '110px' }}>
                   <div style={{ fontSize: '0.7rem', color: '#34d399', fontWeight: 600 }}>🟢 Verified</div>
-                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#34d399' }}>98</div>
+                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#34d399' }}>
+                    {watersheds.length > 0 ? watersheds.filter(w => w.status === 'VERIFIED' || w.status === 'APPROVED').length : 1}
+                  </div>
                 </div>
 
                 <div style={{ background: 'rgba(245, 158, 11, 0.12)', padding: '0.5rem 1rem', borderRadius: '12px', border: '1px solid rgba(245, 158, 11, 0.3)', minWidth: '110px' }}>
                   <div style={{ fontSize: '0.7rem', color: '#f59e0b', fontWeight: 600 }}>🟡 Needs Review</div>
-                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#f59e0b' }}>17</div>
+                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#f59e0b' }}>
+                    {watersheds.length > 0 ? watersheds.filter(w => w.status === 'NEEDS_REVIEW').length : 1}
+                  </div>
                 </div>
 
                 <div style={{ background: 'rgba(244, 63, 94, 0.12)', padding: '0.5rem 1rem', borderRadius: '12px', border: '1px solid rgba(244, 63, 94, 0.3)', minWidth: '110px' }}>
                   <div style={{ fontSize: '0.7rem', color: '#fb7185', fontWeight: 600 }}>🔴 Flagged</div>
-                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#fb7185' }}>10</div>
+                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#fb7185' }}>
+                    {watersheds.length > 0 ? watersheds.filter(w => w.status === 'SPATIAL_DISCREPANCY_FLAG' || w.status === 'NOT_VERIFIED').length : 3}
+                  </div>
                 </div>
 
               </div>
