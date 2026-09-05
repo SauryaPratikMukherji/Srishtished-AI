@@ -16,13 +16,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 export const Route = createFileRoute("/_app/watersheds")({
   head: () => ({
     meta: [
-      { title: "Watersheds — Shristified AI" },
+      { title: "Watersheds — JALPRAMAAN" },
       {
         name: "description",
         content:
           "Browse watershed development projects with village, district, structure type and verification status.",
       },
-      { property: "og:title", content: "Watersheds — Shristified AI" },
+      { property: "og:title", content: "Watersheds — JALPRAMAAN" },
       {
         property: "og:description",
         content: "Searchable register of watershed development projects and their audit status.",

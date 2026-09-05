@@ -14,13 +14,13 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_app/field-audits")({
   head: () => ({
     meta: [
-      { title: "Field Audit & Photo Upload — Shristified AI" },
+      { title: "Field Audit & Photo Upload — JALPRAMAAN" },
       {
         name: "description",
         content:
-          "Submit a geo-tagged field inspection photograph and run AI and satellite cross-validation.",
+          "Submit field photographs with GPS coordinates and EXIF metadata for AI verification.",
       },
-      { property: "og:title", content: "Field Audit & Photo Upload — Shristified AI" },
+      { property: "og:title", content: "Field Audit & Photo Upload — JALPRAMAAN" },
       {
         property: "og:description",
         content: "Field inspector workflow for watershed structure verification.",

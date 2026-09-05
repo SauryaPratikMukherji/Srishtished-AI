@@ -233,9 +233,9 @@ def get_analytics():
             "description": "92% passive auditing (document logs) vs 8% active spatial analytics linked to satellite maps."
         },
         "feasibility_benchmarks": {
-            "cycle_time": {"traditional": "45 Days", "srishtished_ai": "Under 15 Minutes"},
-            "accuracy": {"traditional": "Variable (manual errors)", "srishtished_ai": "88% Spatially Validated"},
-            "cost_reduction": {"traditional": "High travel & field overhead", "srishtished_ai": "90% Lower operational cost"},
+            "cycle_time": {"traditional": "45 Days", "jalpramaan_ai": "Under 15 Minutes"},
+            "accuracy": {"traditional": "Variable (manual errors)", "jalpramaan_ai": "88% Spatially Validated"},
+            "cost_reduction": {"traditional": "High travel & field overhead", "jalpramaan_ai": "90% Lower operational cost"},
             "usps": [
                 "PostGIS Camera Viewshed 2D sight-line cone projection",
                 "Cryptographic anti-spoofing PWA signatures at capture",

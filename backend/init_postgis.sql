@@ -1,4 +1,4 @@
--- SRISHTISHED AI / AQUA NEXUS — PostGIS Schema & Spatial Functions Setup Script
+-- JALPRAMAAN / AQUA NEXUS — PostGIS Schema & Spatial Functions Setup Script
 -- Run this script in PostgreSQL/PostGIS database instance
 
 -- 1. Enable PostGIS Extension

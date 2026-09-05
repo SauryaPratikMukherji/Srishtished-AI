@@ -9,13 +9,13 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_app/validation")({
   head: () => ({
     meta: [
-      { title: "Validation — Shristified AI" },
+      { title: "Validation — JALPRAMAAN" },
       {
         name: "description",
         content:
-          "Five-stage validation workflow from ground evidence to final verification for watershed projects.",
+          "Geospatial and dual-AI validation matrix combining structure detection with satellite indices.",
       },
-      { property: "og:title", content: "Validation — Shristified AI" },
+      { property: "og:title", content: "Validation — JALPRAMAAN" },
       {
         property: "og:description",
         content: "Ground evidence, GPS, AI detection and satellite cross-check workflow.",

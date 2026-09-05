@@ -77,14 +77,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Srishtified AI — Aqua Nexus Watershed Intelligence" },
+      { title: "JALPRAMAAN — Aqua Nexus Watershed Intelligence" },
       { name: "description", content: "Department of Rural Development — Watershed Monitoring & GIS Audit Platform" },
-      { name: "author", content: "Srishtified AI Team" },
-      { property: "og:title", content: "Srishtified AI — Aqua Nexus" },
+      { name: "author", content: "JALPRAMAAN Team" },
+      { property: "og:title", content: "JALPRAMAAN — Aqua Nexus" },
       { property: "og:description", content: "Department of Rural Development — Watershed Monitoring & GIS Audit Platform" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@SrishtifiedAI" },
+      { name: "twitter:site", content: "@JAL_PRAMAAN" },
     ],
     links: [
       {

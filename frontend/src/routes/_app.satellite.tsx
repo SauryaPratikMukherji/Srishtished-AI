@@ -18,13 +18,13 @@ import { NDVI_SERIES, PROJECTS } from "@/lib/mock-data";
 export const Route = createFileRoute("/_app/satellite")({
   head: () => ({
     meta: [
-      { title: "Satellite Monitoring — Shristified AI" },
+      { title: "Satellite Monitoring — JALPRAMAAN" },
       {
         name: "description",
         content:
-          "NDVI, NDWI, vegetation health and water presence indicators derived from satellite observations.",
+          "Multispectral satellite intelligence, NDVI vegetation recovery and NDWI water bodies monitoring.",
       },
-      { property: "og:title", content: "Satellite Monitoring — Shristified AI" },
+      { property: "og:title", content: "Satellite Monitoring — JALPRAMAAN" },
       {
         property: "og:description",
         content: "Simulated satellite indices and time-series for watershed project sites.",

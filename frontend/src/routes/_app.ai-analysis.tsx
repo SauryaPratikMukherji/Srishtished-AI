@@ -10,13 +10,13 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_app/ai-analysis")({
   head: () => ({
     meta: [
-      { title: "AI Analysis — Shristified AI" },
+      { title: "AI Analysis — JALPRAMAAN" },
       {
         name: "description",
         content:
-          "Computer Vision Breakdown, Satellite Multispectral Fusion, and Official Discrepancy Anti-Spoofing Report powered by Hugging Face.",
+          "Computer vision analysis of check dams, farm ponds and gully plugs with confidence scoring.",
       },
-      { property: "og:title", content: "AI Analysis — Shristified AI" },
+      { property: "og:title", content: "AI Analysis — JALPRAMAAN" },
       {
         property: "og:description",
         content: "Deep-dive scientific audit engine for watershed structures.",

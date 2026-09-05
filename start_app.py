@@ -8,7 +8,7 @@ def start_services():
     frontend_dir = os.path.join(project_root, "frontend")
     
     print("=" * 70)
-    print("  SRISHTISHED AI / AQUA NEXUS — Multi-Process App Launcher")
+    print("  JALPRAMAAN / AQUA NEXUS — Multi-Process App Launcher")
     print("=" * 70)
     print("\nStarting FastAPI Backend Service (Port 8000)...")
     

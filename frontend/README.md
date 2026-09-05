@@ -1,4 +1,4 @@
-# Shristified AI Dashboard
+# JALPRAMAAN Dashboard
 
 Frontend monitoring & GIS audit application for Smart India Hackathon 2026. Designed for Department of Rural Development watershed monitoring.
 
@@ -14,7 +14,7 @@ Please actually use these references. Do not ignore them. Match their overall la
 
 PROJECT INFORMATION
 
-Project Name: Shristified AI
+Project Name: JALPRAMAAN
 
 Team Name: Aqua Nexus
 
@@ -26,7 +26,7 @@ Problem Statement ID: 26015 — Application of geospatial techniques for watersh
 
 What the project does
 
-Shristified AI is a watershed development monitoring system for a government/Department of Rural Development type use case.
+JALPRAMAAN is a watershed development monitoring system for a government/Department of Rural Development type use case.
 
 Field inspectors visit watershed structures such as:
 

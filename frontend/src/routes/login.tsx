@@ -8,13 +8,13 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Login — Shristified AI Watershed Monitoring" },
+      { title: "Login — JALPRAMAAN Watershed Monitoring" },
       {
         name: "description",
         content:
-          "Sign in to the Shristified AI watershed development monitoring portal as a district admin or field inspector.",
+          "Sign in to the JALPRAMAAN watershed development monitoring portal as a district admin or field inspector.",
       },
-      { property: "og:title", content: "Login — Shristified AI" },
+      { property: "og:title", content: "Login — JALPRAMAAN" },
       {
         property: "og:description",
         content: "Access the watershed development monitoring portal.",
@@ -45,12 +45,12 @@ function LoginPage() {
           <div className="mb-6 text-center">
             <img
               src={logo}
-              alt="Shristified AI emblem"
+              alt="JALPRAMAAN emblem"
               width={72}
               height={72}
               className="mx-auto h-18 w-18"
             />
-            <h1 className="mt-4 text-2xl font-bold text-navy">Shristified AI</h1>
+            <h1 className="mt-4 text-2xl font-bold text-navy">JALPRAMAAN</h1>
             <p className="mt-1 text-sm text-muted-foreground">
               Watershed Development Monitoring System
             </p>

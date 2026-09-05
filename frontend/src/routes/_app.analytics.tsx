@@ -7,13 +7,13 @@ import { RISKS } from "@/lib/mock-data";
 export const Route = createFileRoute("/_app/analytics")({
   head: () => ({
     meta: [
-      { title: "Analytics & Impact — Shristified AI" },
+      { title: "Analytics & Impact — JALPRAMAAN" },
       {
         name: "description",
         content:
-          "Impact of Shristified AI on watershed audit cycle time, accuracy, cost and resource allocation.",
+          "Impact of JALPRAMAAN on watershed audit cycle time, accuracy, cost and resource allocation.",
       },
-      { property: "og:title", content: "Analytics & Impact — Shristified AI" },
+      { property: "og:title", content: "Analytics & Impact — JALPRAMAAN" },
       {
         property: "og:description",
         content: "Comparison of traditional watershed auditing with AI-assisted validation.",
@@ -117,7 +117,7 @@ function Analytics() {
 
       <SectionCard
         className="mt-5"
-        title="Traditional Process vs Shristified AI"
+        title="Traditional Process vs JALPRAMAAN"
         bodyClassName="p-0"
       >
         <div className="overflow-x-auto">
@@ -126,7 +126,7 @@ function Analytics() {
               <tr className="bg-secondary text-left text-xs tracking-wide text-navy uppercase">
                 <th className="px-5 py-3 font-bold">Metric</th>
                 <th className="px-5 py-3 font-bold">Traditional Process</th>
-                <th className="bg-navy px-5 py-3 font-bold text-white">Shristified AI</th>
+                <th className="bg-navy px-5 py-3 font-bold text-white">JALPRAMAAN</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">

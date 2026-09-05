@@ -10,13 +10,13 @@ import { greeting, ROLE_NAME, useRole } from "@/lib/session";
 export const Route = createFileRoute("/_app/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard — Shristified AI" },
+      { title: "Dashboard — JALPRAMAAN" },
       {
         name: "description",
         content:
-          "Monitor watershed projects, field audits and geospatial validation from one dashboard.",
+          "High-level monitoring metrics, site verification progress, and flagged project overview.",
       },
-      { property: "og:title", content: "Dashboard — Shristified AI" },
+      { property: "og:title", content: "Dashboard — JALPRAMAAN" },
       {
         property: "og:description",
         content: "Watershed project statistics, monitoring map and recent field audits.",

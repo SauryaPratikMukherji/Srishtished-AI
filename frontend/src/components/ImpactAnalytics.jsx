@@ -142,10 +142,10 @@ export default function ImpactAnalytics() {
 
       </div>
 
-      {/* Grid Row 2: Traditional vs SrishtiShed AI Benchmarks */}
+      {/* Grid Row 2: Traditional vs JALPRAMAAN Benchmarks */}
       <div className="glass-panel" style={{ padding: '1.25rem' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Zap size={20} color="var(--primary-cyan)" /> Feasibility Benchmarks: Traditional vs. SrishtiShed AI
+          <Zap size={20} color="var(--primary-cyan)" /> Feasibility Benchmarks: Traditional vs. JALPRAMAAN
         </h3>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>

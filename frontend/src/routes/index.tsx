@@ -13,13 +13,13 @@ import logo from "@/assets/shristified-logo.png";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Shristified AI — Watershed Development Monitoring" },
+      { title: "JALPRAMAAN — Watershed Development Monitoring" },
       {
         name: "description",
         content:
           "AI-powered watershed monitoring that combines geo-tagged field evidence with satellite intelligence to validate development projects.",
       },
-      { property: "og:title", content: "Shristified AI — Watershed Development Monitoring" },
+      { property: "og:title", content: "JALPRAMAAN — Watershed Development Monitoring" },
       {
         property: "og:description",
         content:
@@ -65,13 +65,13 @@ function Landing() {
           <div className="flex items-center gap-3">
             <img
               src={logo}
-              alt="Shristified AI emblem"
+              alt="JALPRAMAAN emblem"
               width={44}
               height={44}
               className="h-11 w-11"
             />
             <div>
-              <p className="text-base font-bold text-navy">Shristified AI</p>
+              <p className="text-base font-bold text-navy">JALPRAMAAN</p>
               <p className="text-[11px] tracking-wide text-muted-foreground uppercase">
                 Watershed Development Monitoring System
               </p>
@@ -94,7 +94,7 @@ function Landing() {
               Government Watershed Monitoring Portal
             </span>
             <h1 className="mt-5 text-4xl leading-tight font-bold text-navy lg:text-5xl">
-              Shristified AI
+              JALPRAMAAN
             </h1>
             <p className="mt-3 text-lg font-medium text-verified">
               Fusing Ground Truth with Satellite Intelligence

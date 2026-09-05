@@ -12,13 +12,13 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_app/map")({
   head: () => ({
     meta: [
-      { title: "Map & GIS — Shristified AI" },
+      { title: "Map & GIS — JALPRAMAAN" },
       {
         name: "description",
         content:
-          "Geospatial view of watershed projects with status filters, layer controls and project popups.",
+          "Geospatial visualization of watershed structures with satellite layers and GPS field submissions.",
       },
-      { property: "og:title", content: "Map & GIS — Shristified AI" },
+      { property: "og:title", content: "Map & GIS — JALPRAMAAN" },
       {
         property: "og:description",
         content: "GIS monitoring interface for watershed development projects.",

@@ -14,7 +14,7 @@ STATIC_DIR.mkdir(parents=True, exist_ok=True)
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(
-    title="SRISHTISHED AI / AQUA NEXUS API",
+    title="JALPRAMAAN / AQUA NEXUS API",
     description="Scientific Watershed Assessment, Automated Monitoring, and Validation Framework API",
     version="1.0.0"
 )
@@ -46,7 +46,7 @@ def on_startup():
 @app.get("/")
 def root():
     return {
-        "app": "SRISHTISHED AI / AQUA NEXUS",
+        "app": "JALPRAMAAN / AQUA NEXUS",
         "description": "Scientific Watershed Assessment, Automated Monitoring, and Validation Framework",
         "status": "online",
         "docs_url": "/docs"

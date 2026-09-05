@@ -42,9 +42,9 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen bg-background">
       <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground lg:flex">
         <div className="flex items-center gap-3 border-b border-sidebar-border px-5 py-4">
-          <img src={logo} alt="Shristified AI emblem" width={40} height={40} className="h-10 w-10" />
+          <img src={logo} alt="JALPRAMAAN emblem" width={40} height={40} className="h-10 w-10" />
           <div>
-            <p className="text-sm font-bold text-white">Shristified AI</p>
+            <p className="text-sm font-bold text-white">JALPRAMAAN</p>
             <p className="text-[10px] tracking-wide text-sidebar-foreground/70 uppercase">
               Watershed Monitoring
             </p>
@@ -79,8 +79,8 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="gov-topstrip h-1" />
         <header className="sticky top-0 z-40 flex items-center justify-between gap-4 border-b border-border bg-card px-5 py-3">
           <div className="flex items-center gap-3 lg:hidden">
-            <img src={logo} alt="Shristified AI" width={32} height={32} className="h-8 w-8" />
-            <span className="text-sm font-bold text-navy">Shristified AI</span>
+            <img src={logo} alt="JALPRAMAAN" width={32} height={32} className="h-8 w-8" />
+            <span className="text-sm font-bold text-navy">JALPRAMAAN</span>
           </div>
           <p className="hidden text-xs font-medium tracking-wide text-muted-foreground lg:block">
             Department of Rural Development · Watershed Development Monitoring System

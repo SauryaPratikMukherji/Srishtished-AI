@@ -11,13 +11,13 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_app/audit-logs")({
   head: () => ({
     meta: [
-      { title: "Audit Logs — Shristified AI" },
+      { title: "Audit Logs — JALPRAMAAN" },
       {
         name: "description",
         content:
-          "Complete log of field audits with inspector, GPS status, AI confidence and verification outcome.",
+          "Cryptographic hash chain audit trail tracking all submission, review, and override events.",
       },
-      { property: "og:title", content: "Audit Logs — Shristified AI" },
+      { property: "og:title", content: "Audit Logs — JALPRAMAAN" },
       {
         property: "og:description",
         content: "Field audit history for watershed development monitoring.",

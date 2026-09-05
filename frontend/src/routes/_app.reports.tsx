@@ -8,13 +8,13 @@ import { REPORTS, DASHBOARD_STATS } from "@/lib/mock-data";
 export const Route = createFileRoute("/_app/reports")({
   head: () => ({
     meta: [
-      { title: "Reports — Shristified AI" },
+      { title: "Reports — JALPRAMAAN" },
       {
         name: "description",
         content:
-          "District and state level watershed verification reports available for review and download.",
+          "Generate and export audit reports for district administration and national watershed databases.",
       },
-      { property: "og:title", content: "Reports — Shristified AI" },
+      { property: "og:title", content: "Reports — JALPRAMAAN" },
       {
         property: "og:description",
         content: "Generated watershed monitoring reports for the Department of Rural Development.",
