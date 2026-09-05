@@ -1,8 +1,6 @@
 # Shristified AI Dashboard
 
-Hey Lovable! I’m building a frontend prototype for our Smart India Hackathon 2026 project. This is only for our college internal presentation/demo in front of judges, NOT the final deployed product.
-
-Please build this like a college student’s polished working prototype, not like an over-engineered enterprise SaaS application. Use mock/static data wherever needed. It does not need to connect to a real backend, database, authentication system, GIS API, satellite API, or AI model right now. The main goal is to make the frontend look realistic, professional, and smooth for a live presentation.
+Frontend monitoring & GIS audit application for Smart India Hackathon 2026. Designed for Department of Rural Development watershed monitoring.
 
 I will attach:
 
