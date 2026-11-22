@@ -37,7 +37,9 @@ RUN useradd -m -u 1000 user && \
 
 USER user
 
-# Hugging Face Spaces port
+# Expose default ports (7860 for Hugging Face, 10000 for Render)
 EXPOSE 7860
+EXPOSE 10000
 
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "7860"]
+# Dynamically bind to the platform's $PORT (defaults to 7860 if PORT is not set)
+CMD ["sh", "-c", "uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-7860}"]
