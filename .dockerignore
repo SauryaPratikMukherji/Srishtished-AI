@@ -1,0 +1,14 @@
+node_modules
+.git
+.gitignore
+.vscode
+__pycache__
+*.pyc
+*.pyo
+.env
+.output
+.tanstack
+*.db
+backend/srishtished.db
+backend/uploads/*
+!backend/uploads/.gitkeep

@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Polygon, Popup, Marker, FeatureGroup, useMap }
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Eye, ShieldCheck, AlertTriangle, Layers, Filter, Compass, Info } from 'lucide-react';
-import { fetchSatelliteLayer, generateLocalFallbackGrid } from '../api/client';
+import { fetchSatelliteLayer, generateLocalFallbackGrid, getFullPhotoUrl } from '../api/client';
 
 // Helper component to auto-center map when dropdown location changes
 function RecenterMap({ center }) {
@@ -691,7 +691,7 @@ export default function GisMap({ watersheds, audits, selectedWatershed, setSelec
             {selectedAudit.photo_url && (
               <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: selectedAudit.status === 'SPATIAL_DISCREPANCY_FLAG' ? '1px solid rgba(244, 63, 94, 0.4)' : selectedAudit.status === 'NEEDS_REVIEW' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid var(--border-color)' }}>
                 <img
-                  src={selectedAudit.photo_url.startsWith('http') ? selectedAudit.photo_url : `http://localhost:8000${selectedAudit.photo_url}`}
+                  src={getFullPhotoUrl(selectedAudit.photo_url)}
                   alt="Field Ground Photo"
                   style={{ width: '100%', height: '160px', objectFit: 'cover' }}
                   onError={(e) => {

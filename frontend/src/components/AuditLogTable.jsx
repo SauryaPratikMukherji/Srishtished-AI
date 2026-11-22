@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ShieldCheck, AlertTriangle, Search, Filter, Eye, Download, FileText, CheckCircle2 } from 'lucide-react';
+import { getFullPhotoUrl } from '../api/client';
 
 export default function AuditLogTable({ audits, watersheds, onOpenProjectDetail }) {
 
@@ -201,7 +202,7 @@ export default function AuditLogTable({ audits, watersheds, onOpenProjectDetail 
               {/* Photo */}
               {selectedAuditModal.photo_url && (
                 <img
-                  src={selectedAuditModal.photo_url.startsWith('http') ? selectedAuditModal.photo_url : `http://localhost:8000${selectedAuditModal.photo_url}`}
+                  src={getFullPhotoUrl(selectedAuditModal.photo_url)}
                   alt="Audit Ground Photo"
                   style={{ width: '100%', height: '220px', objectFit: 'cover', borderRadius: '12px', border: '1px solid var(--border-color)' }}
                   onError={(e) => {

@@ -12,7 +12,7 @@ HF_API_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-I
 def run_huggingface_llm_analysis(audit_data: dict, watershed_data: dict) -> str:
     """Queries Hugging Face Inference API for technical reasoning text."""
     if not HF_TOKEN:
-        return "Offline Analysis: Cross-validated ground computer vision with Sentinel-2 multispectral telemetry."
+        return "Offline Analysis: Cross-validated ground computer vision with Sentinel-2 multispectral telemetry."  
     
     headers = {"Authorization": f"Bearer {HF_TOKEN}"}
     prompt = f"""[INST] You are an expert Remote Sensing and Computer Vision Geospatial Scientist auditing watershed development projects for the Department of Rural Development.

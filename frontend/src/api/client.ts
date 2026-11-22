@@ -1,4 +1,19 @@
-const API_BASE_URL = "http://localhost:8000/api";
+export const BACKEND_URL =
+  (import.meta.env['VITE_BACKEND_URL'] as string | undefined) ||
+  (import.meta.env.PROD ? "" : "http://localhost:8000");
+
+export const API_BASE_URL = `${BACKEND_URL}/api`;
+
+export function getFullPhotoUrl(url?: string): string {
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    if (import.meta.env.PROD && url.includes("localhost:8000")) {
+      return url.replace(/^http:\/\/localhost:8000/, "");
+    }
+    return url;
+  }
+  return `${BACKEND_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+}
 
 export interface Watershed {
   id: string;
@@ -143,7 +158,7 @@ export async function fetchAudits(watershedId: string | null = null): Promise<Au
         azimuth: 135.0,
         focal_length: 28.0,
         timestamp: "2026-08-28T10:15:00Z",
-        photo_url: "http://localhost:8000/static/sample_checkdam_1.jpg",
+        photo_url: "/static/sample_checkdam_1.jpg",
         crypto_verified: 1,
         status: "APPROVED",
         viewshed_geojson: {
@@ -176,7 +191,7 @@ export async function fetchAudits(watershedId: string | null = null): Promise<Au
         azimuth: 270.0,
         focal_length: 35.0,
         timestamp: "2026-08-30T14:20:00Z",
-        photo_url: "http://localhost:8000/static/sample_mismatch.jpg",
+        photo_url: "/static/sample_mismatch.jpg",
         crypto_verified: 1,
         status: "SPATIAL_DISCREPANCY_FLAG",
         viewshed_geojson: {
@@ -208,7 +223,7 @@ export async function fetchAudits(watershedId: string | null = null): Promise<Au
         azimuth: 90.0,
         focal_length: 24.0,
         timestamp: "2026-09-03T15:10:00Z",
-        photo_url: "http://localhost:8000/static/sample_review.jpg",
+        photo_url: "/static/sample_review.jpg",
         crypto_verified: 1,
         status: "NEEDS_REVIEW",
         viewshed_geojson: {

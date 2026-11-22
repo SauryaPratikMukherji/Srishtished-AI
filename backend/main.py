@@ -1,8 +1,9 @@
 import os
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from .config import UPLOAD_DIR, BASE_DIR
 from .database import init_db, seed_sample_audits
@@ -43,15 +44,35 @@ def on_startup():
     seed_sample_audits()
     init_postgis_tables()
 
-@app.get("/")
-def root():
-    return {
-        "app": "JALPRAMAAN / AQUA NEXUS",
-        "description": "Scientific Watershed Assessment, Automated Monitoring, and Validation Framework",
-        "status": "online",
-        "docs_url": "/docs"
-    }
+FRONTEND_DIST = BASE_DIR.parent / "frontend" / "dist"
+
+if FRONTEND_DIST.exists() and (FRONTEND_DIST / "index.html").exists():
+    if (FRONTEND_DIST / "assets").exists():
+        app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIST / "assets")), name="frontend_assets")
+
+    @app.get("/")
+    async def serve_index():
+        return FileResponse(str(FRONTEND_DIST / "index.html"))
+
+    @app.get("/{full_path:path}")
+    async def serve_frontend(full_path: str):
+        if full_path.startswith(("api/", "api", "docs", "redoc", "openapi.json", "static/", "uploads/")):
+            raise HTTPException(status_code=404, detail="Endpoint not found")
+        target_file = FRONTEND_DIST / full_path
+        if target_file.is_file():
+            return FileResponse(str(target_file))
+        return FileResponse(str(FRONTEND_DIST / "index.html"))
+else:
+    @app.get("/")
+    def root():
+        return {
+            "app": "JALPRAMAAN / AQUA NEXUS",
+            "description": "Scientific Watershed Assessment, Automated Monitoring, and Validation Framework",
+            "status": "online",
+            "docs_url": "/docs"
+        }
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("backend.main:app", host="127.0.0.1", port=8000, reload=True)
+    port = int(os.getenv("PORT", "8000"))
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=port, reload=True)

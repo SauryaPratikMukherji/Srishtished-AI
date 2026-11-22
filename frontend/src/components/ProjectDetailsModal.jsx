@@ -1,5 +1,6 @@
 import React from 'react';
 import { CheckCircle2, ShieldCheck, MapPin, Layers, Calendar, User, FileText, ExternalLink, Camera, Globe } from 'lucide-react';
+import { getFullPhotoUrl } from '../api/client';
 
 export default function ProjectDetailsModal({ project, audit, onClose, onViewOnMap }) {
   if (!project && !audit) return null;
@@ -13,7 +14,7 @@ export default function ProjectDetailsModal({ project, audit, onClose, onViewOnM
   const lat = audit?.lat || project?.center?.[0] || 22.5726;
   const lng = audit?.lng || project?.center?.[1] || 88.3639;
   const photoUrl = audit?.photo_url || '/static/sample_checkdam_1.jpg';
-  const fullPhotoUrl = photoUrl.startsWith('http') ? photoUrl : `http://localhost:8000${photoUrl}`;
+  const fullPhotoUrl = getFullPhotoUrl(photoUrl);
 
   const isVerified = status === 'VERIFIED' || status === 'APPROVED';
 
