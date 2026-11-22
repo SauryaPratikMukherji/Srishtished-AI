@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import {
   Camera,
   Satellite,
@@ -11,6 +11,11 @@ import {
 import logo from "@/assets/shristified-logo.png";
 
 export const Route = createFileRoute("/")({
+  beforeLoad: () => {
+    throw redirect({
+      to: "/dashboard",
+    });
+  },
   head: () => ({
     meta: [
       { title: "JALPRAMAAN — Watershed Development Monitoring" },
